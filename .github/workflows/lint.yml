@@ -18,6 +18,4 @@ jobs:
         with:
           ignore: "F501"
           max-line-length: "80"
-          select : "B,C,E,F,W,T4,B950"
-          exclude : "build"
           plugins: "flake8-bugbear::22.1.11 flake8-black"
