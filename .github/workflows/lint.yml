@@ -1,15 +1,21 @@
-name: CI
+name: flake8 Lint
 
 on: [push, pull_request]
 
 jobs:
-  lint:
-
+  flake8-lint:
     runs-on: ubuntu-latest
-
-    steps:  
-    - uses: actions/checkout@v1
-    - name: Flake8 Code Linter
-      uses: jonasrk/flake8-action@master
-      with: 
-        args: "--max-line-length=100 --ignore F501, E501"
+    name: Lint
+    steps:
+      - name: Check out source repository
+        uses: actions/checkout@v2
+      - name: Set up Python environment
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.10"
+      - name: flake8 Lint
+        uses: py-actions/flake8@v2
+        with:
+          ignore: "E501"
+          exclude: "src/ignoreme.py"
+          max-line-length: "100"
