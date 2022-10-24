@@ -1,10 +1,8 @@
 from tkinter import *
 from tkinter import filedialog
 from tkinter import messagebox
-from turtle import color, left
 
 label_settings = {"font": ("Arial", 25), "borderwidth": "10", "background": "lightblue"}
-spath = ""
 
 
 class Settings(object):
