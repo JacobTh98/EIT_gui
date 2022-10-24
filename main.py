@@ -1,14 +1,12 @@
 from ast import Str
+from queue import Full
 from sqlite3 import Row
 from tkinter import *
 from tkinter import filedialog
 from tkinter import messagebox
 from turtle import color, left
 
-label_settings = {"font": "15", "background": "white"}
-pack_settings = {"pady": "10", "side": "top", "anchor": "n"}
-grid_settings = {"pady": "10", "sticky": "n"}
-box_pack = {"pady": 20, "side": "left", "anchor": "ne"}
+label_settings = {"font": ("Arial", 25), "borderwidth": "10", "background": "lightblue"}
 spath = ""
 
 
@@ -22,17 +20,42 @@ class Settings(object):
 
 
 # Main Settings
-settings_upd = Settings(128, "", 10, 0.1, 0)
-
+settings_upd = Settings(16, 8, 10, 0.1, 0)
 
 """
 funcions
 """
 
 
-def displayinput():
+def set_n_el():
     settings_upd.el_num = el_num.get()
-    # settings_upd.el_dist = el_dist.get()
+    print(settings_upd.__dict__)
+    update_EL_DIST()
+
+
+def update_EL_DIST():
+    EL_DIST = Scale(
+        app,
+        from_=0,
+        to=el_num.get(),
+        orient=HORIZONTAL,
+        background="white",
+        command=set_el_dist,
+    )
+    EL_DIST.grid(column=1, row=3, columnspan=4, **grid_dict)
+
+
+def set_el_dist(val):
+    settings_upd.el_dist = val
+
+
+def set_volts():
+    settings_upd.volts = VOLTS.get()
+    print(settings_upd.__dict__)
+
+
+def set_current():
+    settings_upd.current = CURRENT.get()
     print(settings_upd.__dict__)
 
 
@@ -77,18 +100,27 @@ functions end
 
 app = Tk()
 app.title("EIT measurenment user interface")
-
+app.configure(background="white")
 app.grid()
 
-row = 2
-print(row)
+Label(app, text="Checklist for measurement", **label_settings).grid(
+    columnspan=5, ipadx=190, ipady=5
+)
 
-Label(app, text="Checklist for measurement", **label_settings).grid(row=0)
+"""
+Checklist
+"""
+grid_dict = {"sticky": "w", "ipadx": "10"}
 
 # el_num
 Label(
-    app, justify=LEFT, padx=10, text="Number of electrodes:\t", background="red",
-).grid(row=row, sticky="w")
+    app,
+    justify=LEFT,
+    padx=10,
+    text="Number of electrodes:\t",
+    background="white",
+    border=10,
+).grid(row=2, **grid_dict)
 el_num = IntVar()
 el_vals = [16, 32, 64, 128]
 
@@ -99,42 +131,77 @@ for clm, evals in enumerate(el_vals):
         onvalue=evals,
         offvalue=0,
         variable=el_num,
-        command=displayinput,
-        background="blue",
-    ).grid(row=row, column=clm + 1)
+        command=set_n_el,
+        background="white",
+    ).grid(row=2, column=clm + 1)
 
 
 # el_dist
-EL_DIST = Label(app, justify=LEFT, padx=10, text="Electrode distance")
-EL_DIST.grid(row=15, sticky="w")
-# EL_DIST.pack(**box_pack)
-# el_dist = IntVar()
-"""
+
+EL_DIST = Label(
+    app,
+    justify=LEFT,
+    padx=10,
+    text="Electrode distance",
+    border=10,
+)
+EL_DIST.grid(row=3, **grid_dict)
+
 EL_DIST = Scale(
     app,
     from_=0,
-    to=el_num.get(),
+    to=settings_upd.el_num,
     orient=HORIZONTAL,
-    variable=el_dist,
-    command=displayinput,
+    background="white",
+    command=set_el_dist,
 )
-EL_DIST.pack(**box_pack)
-# volts
-"""
-#  current
 
-#  frequency
+EL_DIST.grid(column=1, row=3, columnspan=4, **grid_dict)
+
+# volts
+Label(
+    app,
+    justify=LEFT,
+    padx=10,
+    text="Voltage:\t",
+    background="white",
+    border=10,
+).grid(row=4, **grid_dict)
+
+VOLTS = Entry(app, width=8)
+VOLTS.grid(row=4, column=1)
+Label(app, justify=RIGHT, text="[mV]").grid(row=4, column=1, sticky="e")
+
+Button(app, text="set", command=set_volts).grid(row=4, column=2)
+
+#  current #row=5
+Label(
+    app,
+    justify=LEFT,
+    padx=10,
+    text="Current:\t",
+    border=10,
+).grid(row=5, **grid_dict)
+
+CURRENT = Entry(app, width=8)
+CURRENT.grid(row=5, column=1)
+Label(app, justify=RIGHT, text="[mA]").grid(row=5, column=1, sticky="e")
+
+Button(app, text="set", command=set_current).grid(row=5, column=2)
+#  frequency # row=6
 
 
 def changeText():
     if sub_button["text"] == "Submitted":
         sub_button["text"] = "Submit"
+        button_action()
     else:
         sub_button["text"] = "Submitted"
+        button_action()
 
 
 sub_button = Button(app, text="Submit", command=changeText)
-sub_button.grid(sticky="se")
+sub_button.grid(row=6,column=1, sticky="se")
 
 
 # Menüleiste erstellen
