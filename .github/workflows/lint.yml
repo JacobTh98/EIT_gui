@@ -1,18 +1,15 @@
-name: flake8
+name: CI
 
 on: [push, pull_request]
 
 jobs:
   lint:
+
     runs-on: ubuntu-latest
+
     steps:  
-    - name: Check out source repository
-      uses: actions/checkout@v2
-    - name: Set up Python environment
-      uses: actions/setup-python@v2
-      with:
-        python-version: "3.9.12"      
+    - uses: actions/checkout@v1
     - name: Flake8 Code Linter
-      uses: py-actions/flake8@v2
+      uses: jonasrk/flake8-action@master
       with: 
         args: "--max-line-length=100 --ignore F501, E501"
