@@ -1,6 +1,3 @@
-from ast import Str
-from queue import Full
-from sqlite3 import Row
 from tkinter import *
 from tkinter import filedialog
 from tkinter import messagebox
@@ -20,7 +17,7 @@ class Settings(object):
 
 
 # Main Settings
-settings_upd = Settings(16, 8, 10, 0.1, 0)
+settings_upd = Settings(0, 0, 0, 0, 0)
 
 """
 funcions
@@ -43,7 +40,8 @@ def update_EL_DIST():
         command=set_el_dist,
     )
     EL_DIST.grid(column=1, row=3, columnspan=4, **grid_dict)
-    EL_DIST['state'] = 'normal'
+    EL_DIST["state"] = "normal"
+
 
 def set_el_dist(val):
     settings_upd.el_dist = val
@@ -51,15 +49,19 @@ def set_el_dist(val):
 
 def set_volts():
     settings_upd.volts = VOLTS.get()
+    VOLTS_b.configure(bg="green", fg="white")
     print(settings_upd.__dict__)
+
 
 def set_frequency():
     settings_upd.frequency = FREQ.get()
+    FREQ_b.configure(bg="green", fg="white")
     print(settings_upd.__dict__)
 
 
 def set_current():
     settings_upd.current = CURRENT.get()
+    CURRENT_b.configure(bg="green", fg="white")
     print(settings_upd.__dict__)
 
 
@@ -107,7 +109,7 @@ app.title("EIT measurenment user interface")
 app.configure(background="white")
 app.grid()
 
-Label(app, text="Checklist for measurement", **label_settings).grid(
+Label(app, text="Settings for measurement", **label_settings).grid(
     columnspan=5, ipadx=190, ipady=5
 )
 
@@ -161,8 +163,8 @@ EL_DIST = Scale(
 )
 
 EL_DIST.grid(column=1, row=3, columnspan=4, **grid_dict)
-#enable, if el_num is selected
-EL_DIST['state'] = 'disabled'
+# enable, if el_num is selected
+EL_DIST["state"] = "disabled"
 
 # volts
 Label(
@@ -178,8 +180,8 @@ VOLTS = Entry(app, width=8)
 VOLTS.grid(row=4, column=1)
 Label(app, justify=RIGHT, text="[mV]").grid(row=4, column=1, sticky="e")
 
-Button(app, text="set", command=set_volts).grid(row=4, column=2)
-
+VOLTS_b = Button(app, text="set", command=set_volts)
+VOLTS_b.grid(row=4, column=2)
 #  current #row=5
 Label(
     app,
@@ -193,7 +195,8 @@ CURRENT = Entry(app, width=8)
 CURRENT.grid(row=5, column=1)
 Label(app, justify=RIGHT, text="[mA]").grid(row=5, column=1, sticky="e")
 
-Button(app, text="set", command=set_current).grid(row=5, column=2)
+CURRENT_b = Button(app, text="set", command=set_current)
+CURRENT_b.grid(row=5, column=2)
 #  frequency # row=6
 Label(
     app,
@@ -208,23 +211,25 @@ FREQ = Entry(app, width=8)
 FREQ.grid(row=6, column=1)
 Label(app, justify=RIGHT, text="[HZ]").grid(row=6, column=1, sticky="e")
 
-Button(app, text="set", command=set_frequency).grid(row=6, column=2)
+FREQ_b = Button(app, text="set", command=set_frequency)
+FREQ_b.grid(row=6, column=2)
 
 " Submit"
+
 
 def changeText():
     if sub_button["text"] == "Saved":
         sub_button["text"] = "Save"
-        sub_button.configure(bg = "grey", fg="black")
+        sub_button.configure(bg="grey", fg="black")
         button_action()
     else:
         sub_button["text"] = "Saved"
-        sub_button.configure(bg = "green", fg="white")
+        sub_button.configure(bg="green", fg="white")
         button_action()
 
 
 sub_button = Button(app, text="Save", command=changeText)
-sub_button.grid(row=7,column=4)
+sub_button.grid(row=7, column=4)
 
 
 # Menüleiste erstellen
