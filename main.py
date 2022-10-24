@@ -1,6 +1,19 @@
-from tkinter import *
-from tkinter import filedialog
-from tkinter import messagebox
+from tkinter import (
+    RIGHT,
+    Button,
+    Label,
+    LEFT,
+    Entry,
+    Menu,
+    Scale,
+    HORIZONTAL,
+    #  Toplevel,
+    IntVar,
+    Checkbutton,
+    Tk,
+    #  filedialog,
+    messagebox,
+)
 
 label_settings = {"font": ("Arial", 25), "borderwidth": "10", "background": "lightblue"}
 
@@ -78,6 +91,7 @@ Contct: jacob.thoenes@uni-rostock.de \n\
     messagebox.showinfo(message=m_text, title="Info")
 
 
+"""
 def save_window():
 
     # Toplevel object which will
@@ -96,7 +110,7 @@ def save_window():
     )
     # A Label widget to show in toplevel
     Label(newWindow, text="This is a new window").pack()
-
+"""
 
 """
 functions end
@@ -108,7 +122,7 @@ app.configure(background="white")
 app.grid()
 
 Label(app, text="Settings for measurement", **label_settings).grid(
-    columnspan=5, ipadx=190, ipady=5
+    columnspan=5, ipadx=200, ipady=5
 )
 
 """
@@ -146,7 +160,7 @@ EL_DIST = Label(
     app,
     justify=LEFT,
     padx=10,
-    text="Electrode distance",
+    text="Electrode distance:\t",
     border=10,
 )
 EL_DIST.grid(row=3, **grid_dict)
@@ -185,7 +199,7 @@ Label(
     app,
     justify=LEFT,
     padx=10,
-    text="Current:\t",
+    text="Current: \t \t",
     border=10,
 ).grid(row=5, **grid_dict)
 
@@ -238,7 +252,7 @@ help_menu = Menu(dropdown, tearoff=0)
 # Beim Klick auf Datei oder auf Help sollen nun weitere Einträge erscheinen.
 # Diese werden also zu "datei_menu" und "help_menu" hinzugefügt
 datei_menu.add_command(label="Run", command=button_action)
-datei_menu.add_command(label="Save settings", command=save_window)
+datei_menu.add_command(label="Save settings")  # , command=save_window
 datei_menu.add_separator()  # Fügt eine Trennlinie hinzu
 datei_menu.add_command(label="Exit", command=app.quit)
 
